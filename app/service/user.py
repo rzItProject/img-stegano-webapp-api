@@ -34,11 +34,22 @@ class UserService:
         await UserRepository.create_user(user)
 
         return UserType(id=user.id, email=user.email, username=user.username)
+
     
     @staticmethod
     async def fetch_all_users() -> list[User]:
         list_users = await UserRepository.get_all_users()
         return [UserType(id=user.id, email=user.email, username=user.username) for user in list_users]
+    
+    @staticmethod
+    async def fetch_user_by_id(user_id: int) -> User:
+        user = await UserRepository.get_user_by_id(user_id)
+        return UserType(id=user.id, email=user.email, username=user.username)
+    
+    @staticmethod
+    async def fetch_user_by_email(email: str) -> User:
+        user = await UserRepository.get_user_by_email(email)
+        return UserType(id=user.id, email=user.email, username=user.username)
     
     @staticmethod
     def _hash_password(password: str) -> str:

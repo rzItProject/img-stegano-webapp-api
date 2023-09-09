@@ -1,5 +1,10 @@
-from typing import Optional
 import strawberry
+from typing import Optional
+from pydantic import BaseModel
+
+class LoginInput(BaseModel):
+    email: str
+    password: str
 
 # user
 
