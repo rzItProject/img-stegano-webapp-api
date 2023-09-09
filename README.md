@@ -101,10 +101,6 @@ Strawberry est une bibliothèque pour la création de serveurs GraphQL en Python
 
 ---
 
-D'accord, intégrons cela au README.
-
----
-
 ## Mise en place de PostgreSQL
 
 La base de données choisie pour ce projet est PostgreSQL. Voici comment la configurer et la mettre en place sur Windows.
