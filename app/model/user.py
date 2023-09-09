@@ -4,7 +4,7 @@ from sqlmodel import SQLModel, Field
 from typing import Optional
 
 class User(SQLModel, table=True):
-    __tablename__ = "note"
+    __tablename__ = "user_account"
     
     id: int = Field(default=None, primary_key=True, index=True)
     username: str = Field(index=True, unique=True, min_length=3, max_length=50)

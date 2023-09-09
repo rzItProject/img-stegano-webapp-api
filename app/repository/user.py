@@ -20,6 +20,8 @@ class UserRepository:
         """Creates a new user in the database."""
         async with db as session:
             async with session.begin():
+
+                
                 try:
                     session.add(user_data)
                     await db.commit_rollback()

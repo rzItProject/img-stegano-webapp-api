@@ -1,9 +1,12 @@
+import strawberry
 import uvicorn
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from app.routes import userRoute
 from app.database.config import db
+from app.graphql.query import Query
+from strawberry.fastapi import GraphQLRouter
 
 def init_app():
     # instance
@@ -21,6 +24,11 @@ def init_app():
     async def shutdown():
         await db.drop_all() 
 
+    # add graphql endpoint
+    schema = strawberry.Schema(query=Query)
+    graphql_app = GraphQLRouter(schema)
+    
+    apps.include_router(graphql_app, prefix="/graphql")
     apps.include_router(userRoute.userRouter)
 
     return apps

@@ -2,7 +2,7 @@ import asyncio
 import asyncpg
 
 
-DB_CONFIG = "postgresql://postgres:&*SuperRootSQL$@localhost:5432/steganoapp"
+DB_CONFIG = "postgresql://postgres:&*SuperRootSQL$@localhost:5432/img_steg_api"
 
 async def test_connection():
     conn = None
