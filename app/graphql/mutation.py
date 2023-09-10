@@ -15,7 +15,7 @@ class Mutation:
             raise e
     
     @strawberry.mutation
-    async def login(self, user_data: UserLoginInput) -> str:
+    async def login_for_access_token(self, user_data: UserLoginInput) -> LoginResponse:
         try:
             """Authenticate a user and return an access token."""
             return await UserService.authenticate_user(user_data.email, user_data.password)

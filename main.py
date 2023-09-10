@@ -6,6 +6,7 @@ from fastapi.templating import Jinja2Templates
 from app.routes import userRoute
 from app.database.config import db
 from app.graphql.query import Query
+from app.graphql.mutation import Mutation
 from strawberry.fastapi import GraphQLRouter
 from app.schema.user import UserRegistrationInput
 from app.service.user import UserService
@@ -14,6 +15,8 @@ from app.service.user import UserService
 def init_app():
     # instance
     apps = FastAPI()
+
+    apps.middleware
 
     # config static and templates
     templates = Jinja2Templates(directory="app/templates")
@@ -37,7 +40,7 @@ def init_app():
         await db.drop_all()
 
     # add graphql endpoint
-    schema = strawberry.Schema(query=Query)
+    schema = strawberry.Schema(query=Query, mutation=Mutation)
     graphql_app = GraphQLRouter(schema)
 
     apps.include_router(graphql_app, prefix="/graphql")

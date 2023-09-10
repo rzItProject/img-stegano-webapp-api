@@ -1,9 +1,13 @@
 import logging
-import bcrypt
 from datetime import datetime
+
+import bcrypt
 from app.repository.user import UserRepository
-from app.schema.user import UserRegistrationInput, UserType
+from app.schema.user import LoginResponse, UserRegistrationInput, UserType
 from app.model.user import User
+from passlib.context import CryptContext
+import app.utils.authentication as auth
+bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Custom Exception Classes
 class AuthenticationError(Exception):
@@ -15,6 +19,7 @@ class UserAlreadyExistsError(Exception):
 class UserNotFoundError(Exception):
     pass
 
+
 class UserService:
 
     @staticmethod
@@ -25,7 +30,7 @@ class UserService:
             raise UserAlreadyExistsError("A user with this email already exists.")
 
         # Hash the password.
-        hashed_password = UserService._hash_password(user_data.password)
+        hashed_password = auth.hash_password(user_data.password)
 
         # Create the User object.
         user = User(username=user_data.username, email=user_data.email, hashed_password=hashed_password)
@@ -34,6 +39,18 @@ class UserService:
         await UserRepository.create_user(user)
 
         return UserType(id=user.id, email=user.email, username=user.username)
+    
+    @staticmethod
+    async def authenticate_user(email: str, password: str) -> LoginResponse:
+        user = await UserRepository.get_user_by_email(email)
+        if not user:
+            raise AuthenticationError("Invalid email or password.")
+        
+        if not auth.verify_password(password, user.hashed_password):
+            raise AuthenticationError("Invalid email or password.")
+        
+        access_token = auth.create_access_token(data={"sub": user.email})
+        return LoginResponse(access_token=access_token)
 
     
     @staticmethod
@@ -50,10 +67,3 @@ class UserService:
     async def fetch_user_by_email(email: str) -> User:
         user = await UserRepository.get_user_by_email(email)
         return UserType(id=user.id, email=user.email, username=user.username)
-    
-    @staticmethod
-    def _hash_password(password: str) -> str:
-        """Hashes a password."""
-        salt = bcrypt.gensalt()
-        hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
-        return hashed.decode('utf-8')
