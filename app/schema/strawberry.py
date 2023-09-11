@@ -1,12 +1,6 @@
-import strawberry
 from typing import Optional
-from pydantic import BaseModel
+import strawberry
 
-class LoginInput(BaseModel):
-    email: str
-    password: str
-
-# user
 
 @strawberry.type
 class UserType:
@@ -16,17 +10,12 @@ class UserType:
 
 @strawberry.type
 class LoginResponse:
-    access_token: str
-
+    message: str
+    token: str
 
 @strawberry.input
 class UserRegistrationInput:
     username: str
-    email: str
-    password: str
-
-@strawberry.input
-class UserLoginInput:
     email: str
     password: str
 

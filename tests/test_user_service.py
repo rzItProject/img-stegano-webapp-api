@@ -1,6 +1,6 @@
 import pytest
 from app.service.user import UserService, UserAlreadyExistsError
-from app.schema.user import UserRegistrationInput
+from app.schema.strawberry import UserRegistrationInput
 from app.repository.user import UserRepository
 
 

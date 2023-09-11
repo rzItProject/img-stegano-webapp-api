@@ -1,5 +1,5 @@
 from app.model.user import User
-from app.database.config import db
+from app.core.db_config import db
 from sqlalchemy.sql import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import update as sql_update, delete as sql_delete
@@ -53,3 +53,30 @@ class UserRepository:
             result = await session.execute(stmt)
             user = result.scalars().first()
             return user
+        
+    staticmethod
+    async def get_user_by_username(username: str) -> User:
+        async with db as session:
+            query = select(User).where(User.username == username)
+            result = await session.execute(query)
+            user = result.scalars().first()
+            return user
+    
+    @staticmethod
+    async def update_user(user_id: int, updated_data: User) -> None:
+        async with db as session:
+            query = select(User).where(User.id == user_id)
+            result = await session.execute(query)
+            user = result.scalars().first()
+            user.username = updated_data.username
+            user.email = updated_data.email
+            query = sql_update(User).where(User.id == user_id).values(**user.dict()).execution_options(synchronize_session="fetch")
+            await session.execute(query)
+            await db.commit_rollback()
+    
+    @staticmethod
+    async def delete_user(user_id: int) -> None:
+        async with db as session:
+            query = sql_delete(User).where(User.id == user_id)
+            await session.execute(query)
+            await db.commit_rollback()
