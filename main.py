@@ -5,11 +5,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from strawberry.fastapi import GraphQLRouter
 
 from app.core.db_config import db
-from app.controller.rest_ctrl.auth_endpoints import router as auth_router
-from app.schema.pydantic import CreateUserInput
-from app.service.user import UserService
+from app.controller.rest_ctrl.authentication import router as auth_router
 from app.controller.graphql_ctrl.user_resolvers import Mutation, Query
-from app.utils.auth_middleware import AuthMiddleware
+from app.service.authentication import generate_role
+from app.middleware.auth_middleware import AuthMiddleware
 
 origins= [
     "http://localhost:3000"
@@ -40,20 +39,14 @@ def init_app():
     @app.on_event("startup")
     async def starup():
         await db.create_all()
-        populate_user = [
-            {"username": "test1", "email": "test1@email.com", "password": "password1"},
-            {"username": "kikou", "email": "kikou@email.com", "password": "kikou"},
-        ]
 
-        for user_data in populate_user:
-            user = CreateUserInput(**user_data)
-            await UserService.register_user(user)
 
     
     @app.on_event("shutdown")
     async def shutdown():
-        await db.drop_all()
+        # await db.drop_all()
         await db.close()
+        await generate_role()
 
     return app
 

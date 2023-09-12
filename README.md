@@ -190,4 +190,14 @@ Voici d'autres commandes courantes et utiles à utiliser dans le shell `psql` de
 - `\set` : Afficher toutes les variables `psql`.
 - `\unset [nom_variable]` : Supprimer une variable.
 
+#### Backup PostgreSQL Database:
+
+ ```bash
+   pg_dump -U username -W -F c -b -v -f "backup_filename.backup" dbname
+   ```
+### Restore PostgreSQL Database:
+
+```bash
+   pg_restore -U username -d dbname -v "backup_filename.backup"
+   ```
 ---
