@@ -4,14 +4,19 @@ from typing import Optional
 from dotenv import load_dotenv
 from jose import JWTError, jwt
 
-from fastapi import Request, HTTPException
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import Depends, Request, HTTPException, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials, OAuth2PasswordBearer
+from app.repository.user import UsersRepository
+
+from app.schema.pydantic import TokenData
 
 load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = 15
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 
 class JWTRepo:
@@ -98,3 +103,24 @@ class JWTBearer(HTTPBearer):
             if jwt.decode(jwt_token, SECRET_KEY, algorithms=[ALGORITHM]) is not None
             else False
         )
+    
+# not used because we are using a middleware and cookies
+async def get_current_user(token: str = Depends(oauth2_scheme)):
+    user_token_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate user",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("username")
+        user_id: str = payload.get("user_id")
+        if username is None or user_id is None:
+            raise user_token_exception
+        token_data = TokenData(username=username, user_id=user_id)
+    except JWTError:
+        raise user_token_exception
+    user = await UsersRepository.find_by_username(token_data.username)
+    if user is None:
+        raise user_token_exception
+    return user

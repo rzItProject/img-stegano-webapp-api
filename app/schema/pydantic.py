@@ -58,11 +58,6 @@ class LoginSchema(BaseModel):
     password: str
 
 
-class ForgotPasswordSchema(BaseModel):
-    email: str
-    new_password: str
-
-
 class DetailSchema(BaseModel):
     status: str
     message: str

@@ -1,10 +1,12 @@
 from typing import List
 import strawberry
+from app.schema.strawberry import ForgotPasswordSchema, ResponseSchemaGql
 
 from app.schema.strawberry import (
     UserUpdateInput,
     UserType,
 )
+from app.service.authentication import AuthService
 from app.service.user import UserService
 
 
@@ -18,19 +20,8 @@ class Query:
 
 @strawberry.type
 class Mutation:
-        
+
     @strawberry.mutation
-    async def update_user(self, user_id: int, user_data: UserUpdateInput) -> str:
-        try:
-            """Update a new user and returns their details."""
-            return await UserService.update_user(user_id, user_data)
-        except Exception as e:
-            raise e
-        
-    @strawberry.mutation
-    async def delete_user(self, user_id: int) -> str:
-        try:
-            """Delete a new user and returns their details."""
-            return await UserService.delete_user(user_id)
-        except Exception as e:
-            raise e
+    async def forgot_password(request_body: ForgotPasswordSchema)-> ResponseSchemaGql[str]:
+        await AuthService.forgot_password_service(request_body)
+        return ResponseSchemaGql(detail="Successfully update data!")

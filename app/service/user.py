@@ -24,3 +24,4 @@ class UserService:
         list_users = await UsersRepository.get_all()
         print(list_users)
         return [UserType(id=user.id, email=user.email, username=user.username) for user in list_users]
+    

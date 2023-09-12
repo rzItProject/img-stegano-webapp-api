@@ -6,7 +6,6 @@ from app.schema.pydantic import (
     ResponseSchema,
     RegisterSchema,
     LoginSchema,
-    ForgotPasswordSchema,
 )
 from app.service.authentication import AuthService
 
@@ -36,9 +35,4 @@ async def login(requset_body: LoginSchema):
     return response
 
 
-@router.post(
-    "/forgot-password", response_model=ResponseSchema, response_model_exclude_none=True
-)
-async def forgot_password(request_body: ForgotPasswordSchema):
-    await AuthService.forgot_password_service(request_body)
-    return ResponseSchema(detail="Successfully update data!")
+

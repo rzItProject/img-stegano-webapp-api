@@ -8,7 +8,7 @@ from app.core.db_config import db
 from app.controller.rest_ctrl.authentication import router as auth_router
 from app.controller.graphql_ctrl.user_resolvers import Mutation, Query
 from app.service.authentication import generate_role
-from app.utils.auth_middleware import AuthMiddleware
+from app.middleware.auth_middleware import AuthMiddleware
 
 origins= [
     "http://localhost:3000"

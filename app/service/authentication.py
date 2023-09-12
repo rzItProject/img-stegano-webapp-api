@@ -4,7 +4,8 @@ from uuid import uuid4
 from fastapi import HTTPException
 
 from passlib.context import CryptContext
-from app.schema.pydantic import RegisterSchema, LoginSchema, ForgotPasswordSchema
+from app.schema.pydantic import RegisterSchema, LoginSchema
+from app.schema.strawberry import ForgotPasswordSchema
 from app.model import Person, Users, UsersRole, Role
 from app.repository.role import RoleRepository
 from app.repository.user import UsersRepository
@@ -15,6 +16,7 @@ from app.repository.auth_repo import JWTRepo
 
 # Encrypt password
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 
 
 class AuthService:
@@ -89,3 +91,7 @@ async def generate_role():
     if not _role:
         await RoleRepository.create_list(
             [Role(id=str(uuid4()), role_name="admin"), Role(id=str(uuid4()), role_name="user")])
+        
+
+
+        

@@ -30,4 +30,12 @@ class UsersRepository(BaseCrud):
             await session.execute(query)
             await db.commit_rollback()
 
+    @staticmethod
+    async def update_username(email: str, password: str):
+        async with db as session:
+            query = sql_update(Users).where(Users.email == email).values(
+                password=password).execution_options(synchronize_session="fetch")
+            await session.execute(query)
+            await db.commit_rollback()
+
     # TODO: UPDATE EMAIL, USERNAME
