@@ -143,8 +143,8 @@ La base de données choisie pour ce projet est PostgreSQL. Voici comment la conf
 
 5. **Suppression d'une base de données** :
    Pour supprimer une base de données, utilisez la commande :
-   ```bash
-   dropdb -U postgres nom_base_de_donnees
+   ```sql
+   DROP DATABASE [NOM_BASE_DE_DONNEES]
    ```
    
 6. **Changer le port et l'hôte** :
