@@ -1,4 +1,4 @@
-import os
+""" import os
 from datetime import timedelta
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status, Response
@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 from app.utils.security import create_access_token
 from app.schema.pydantic import CreateUserInput, LoginUserInput, Token, TokenData
-from app.service.user import UserService
+from app.service.authentication import UserService
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -58,3 +58,4 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         raise user_token_exception
     return user
     
+ """

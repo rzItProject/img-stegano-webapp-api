@@ -8,6 +8,7 @@ from app.schema.strawberry import (
 from app.service.user import UserService
 
 
+
 @strawberry.type
 class Query:
     @strawberry.field

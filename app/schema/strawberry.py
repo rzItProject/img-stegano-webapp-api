@@ -4,7 +4,7 @@ import strawberry
 
 @strawberry.type
 class UserType:
-    id: int
+    id: str
     username: str
     email: str
 
