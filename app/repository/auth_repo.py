@@ -5,7 +5,11 @@ from dotenv import load_dotenv
 from jose import JWTError, jwt
 
 from fastapi import Depends, Request, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials, OAuth2PasswordBearer
+from fastapi.security import (
+    HTTPBearer,
+    HTTPAuthorizationCredentials,
+    OAuth2PasswordBearer,
+)
 from app.repository.user import UsersRepository
 
 from app.schema.pydantic import TokenData
@@ -14,7 +18,11 @@ load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = 15
+ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
+try:
+    ACCESS_TOKEN_EXPIRE_MINUTES = int(ACCESS_TOKEN_EXPIRE_MINUTES)
+except (TypeError, ValueError):
+    raise ValueError("La variable d'environnement ACCESS_TOKEN_EXPIRE_MINUTES doit être un nombre entier valide.")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
@@ -36,14 +44,27 @@ class JWTRepo:
         encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
         return encoded_jwt
 
+    
     def decode_token(self):
         try:
             decode_token = jwt.decode(self.token, SECRET_KEY, algorithms=[ALGORITHM])
-            return decode_token if decode_token["exp"] >= datetime.time() else None
-        except:
-            return {}
-    
-    def verify_jwt(self, token: str):
+            print(decode_token["exp"])
+            if decode_token["exp"] >= datetime.utcnow().timestamp():
+                return decode_token
+            else:
+                raise HTTPException(status_code=401, detail="Token a expiré")    
+        except JWTError:
+            raise HTTPException(status_code=401, detail="Token invalide")
+
+    @staticmethod
+    def verify_jwt(jwt_token: str):
+        return (
+            True
+            if jwt.decode(jwt_token, SECRET_KEY, algorithms=[ALGORITHM]) is not None
+            else False
+        )
+
+    """ def verify_jwt(self, token: str):
         try:
             payload = self.decode_token(token)
             user_id = payload.get("user_id")
@@ -54,8 +75,8 @@ class JWTRepo:
             return user_id
 
         except JWTError:
-            return None
-    
+            return None """
+
     @staticmethod
     def extract_token(token: str):
         return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -103,7 +124,8 @@ class JWTBearer(HTTPBearer):
             if jwt.decode(jwt_token, SECRET_KEY, algorithms=[ALGORITHM]) is not None
             else False
         )
-    
+
+
 # not used because we are using a middleware and cookies
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     user_token_exception = HTTPException(

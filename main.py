@@ -11,7 +11,9 @@ from app.service.authentication import generate_role
 from app.middleware.auth_middleware import AuthMiddleware
 
 origins= [
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "https://localhost:3000",
+    "https://192.168.56.1:3000"
 ]
 
 PRODUCTION = "True"

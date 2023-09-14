@@ -4,6 +4,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
+from fastapi import status
 
 
 from dotenv import load_dotenv
@@ -28,6 +29,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
                     if not username:
                         raise ValueError("Username is missing from token.")
                     request.state.user = username  # Add user information to request state
+                    return JSONResponse(status_code=202, content={"detail": "Authenticated"})
                 except JWTError:
                     return JSONResponse(status_code=401, content={"detail": "Invalid token"})
         return await call_next(request)
