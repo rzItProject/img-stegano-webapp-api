@@ -4,11 +4,11 @@ from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from strawberry.fastapi import GraphQLRouter
 
-from app.core.db_config import db
-from app.controller.rest_ctrl.authentication import router as auth_router
-from app.controller.graphql_ctrl.user_resolvers import Mutation, Query
+from app.infrastructure.database.session import db
+from app.api.routes.rest.authentication import router as auth_router
+from app.api.routes.graphql.user_resolvers import Mutation, Query
 from app.service.authentication import generate_role
-from app.middleware.auth_middleware import AuthMiddleware
+from app.api.dependencies.auth_middleware import AuthMiddleware
 
 origins= [
     "http://localhost:3000",
@@ -41,14 +41,13 @@ def init_app():
     @app.on_event("startup")
     async def starup():
         await db.create_all()
-
-
+        #await generate_role()
     
     @app.on_event("shutdown")
     async def shutdown():
-        # await db.drop_all()
+        await db.drop_all()
         await db.close()
-        await generate_role()
+        
 
     return app
 

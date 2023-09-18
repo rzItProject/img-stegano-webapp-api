@@ -1,9 +1,12 @@
 
 from sqlalchemy.future import select
-from app.model import Users, Person
-from app.core.db_config import db
-from app.repository.user import UsersRepository
-from app.schema.strawberry import UserType
+from app.api.schema.pydantic import UserType
+from app.infrastructure.database.model.person import Person
+from app.infrastructure.database.model.users import Users
+from app.infrastructure.database.repository.user import UsersRepository
+
+from app.infrastructure.database.session import db
+
 
 class UserService:
 
