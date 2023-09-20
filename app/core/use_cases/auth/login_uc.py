@@ -3,7 +3,7 @@ from typing import Protocol
 from fastapi import HTTPException
 from passlib.context import CryptContext
 from app.api.schema.pydantic import LoginSchema
-from app.infrastructure.database.repositories.auth_repo import JWTRepo
+from app.api.auth_repo import JWTRepo
 from app.infrastructure.database.repositories.user import UsersRepository
 from app.exceptions.custom_exceptions import InvalidPasswordException, UsernameNotFoundException
 

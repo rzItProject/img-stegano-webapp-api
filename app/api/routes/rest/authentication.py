@@ -3,7 +3,7 @@ import os
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
-from app.infrastructure.database.repositories.auth_repo import JWTRepo
+from app.api.auth_repo import JWTRepo
 load_dotenv()
 
 from app.api.schema.pydantic import (

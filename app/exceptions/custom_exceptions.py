@@ -35,3 +35,25 @@ class EmailAlreadyExistsException(HTTPException):
 class InvalidDataException(HTTPException):
     def __init__(self, detail: str):
         super().__init__(status_code=401, detail=detail)
+
+
+class TokenMissingException(HTTPException):
+    def __init__(self):
+        super().__init__(status_code=401, detail="Token is missing from request.")
+
+class InvalidTokenException(HTTPException):
+    def __init__(self):
+        super().__init__(status_code=401, detail="Invalid token or token could not be decoded.")
+
+class TokenExpiredException(HTTPException):
+    def __init__(self):
+        super().__init__(status_code=401, detail="Token has expired.")
+
+class UserNotFoundException(HTTPException):
+    def __init__(self):
+        super().__init__(status_code=404, detail="User associated with token not found.")
+
+class InsufficientPermissionsException(HTTPException):
+    def __init__(self):
+        super().__init__(status_code=403, detail="User does not have sufficient permissions.")
+

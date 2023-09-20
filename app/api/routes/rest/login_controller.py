@@ -8,7 +8,7 @@ from app.api.schema.pydantic import LoginSchema, RegisterSchema, ResponseSchema
 from app.core.use_cases.auth.login_uc import LoginUser
 from app.core.use_cases.auth.register_uc import RegisterUser
 from app.infrastructure.database.repositories.user import UsersRepository
-from app.infrastructure.database.repositories.auth_repo import JWTRepo
+from app.api.auth_repo import JWTRepo
 
 
 from dotenv import load_dotenv
@@ -27,8 +27,8 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
 @router.post("/login", response_model=ResponseSchema)
-async def login_endpoint(req: LoginSchema, login_service: LoginUser = Depends(get_login_uc)):
-    token = await login_service.login(req)
+async def login_endpoint(req: LoginSchema, login_use_case: LoginUser = Depends(get_login_uc)):
+    token = await login_use_case.login(req)
     response = JSONResponse({"message": "Logged in successfully", "token": token})
     response.set_cookie(
         key="token",

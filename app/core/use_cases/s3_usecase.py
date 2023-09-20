@@ -8,7 +8,7 @@ class S3UseCase:
         self.s3_repository = s3_repository
         self.image_repository = image_repository
 
-    async def execute_upload(self, user_id: str, file):
+    def execute_upload(self, user_id: str, file):
         # Upload to S3
         self.s3_repository.upload_file('stegano', file.file, file.filename)
 

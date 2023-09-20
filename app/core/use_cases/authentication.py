@@ -13,7 +13,7 @@ from app.infrastructure.database.orm_models.role import Role
 from app.infrastructure.database.orm_models.user_role import UsersRole
 from app.infrastructure.database.orm_models.users import Users
 
-from app.infrastructure.database.repositories.auth_repo import JWTRepo
+from app.api.auth_repo import JWTRepo
 from app.infrastructure.database.repositories.person import PersonRepository
 from app.infrastructure.database.repositories.role import RoleRepository
 from app.infrastructure.database.repositories.user import UsersRepository

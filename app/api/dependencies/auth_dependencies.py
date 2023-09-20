@@ -1,7 +1,7 @@
 from fastapi import Depends
 from app.core.use_cases.auth.login_uc import LoginUser
 from app.core.use_cases.auth.register_uc import RegisterUser
-from app.infrastructure.database.repositories.auth_repo import JWTRepo
+from app.api.auth_repo import JWTRepo
 
 from app.infrastructure.database.repositories.person import PersonRepository
 from app.infrastructure.database.repositories.role import RoleRepository
