@@ -64,3 +64,10 @@ class DetailSchema(BaseModel):
 class ResponseSchema(BaseModel):
     detail: str
     result: Optional[T] = None
+
+
+class ImageResponseModel(BaseModel):
+    id: str
+    image_link: str
+    image_data: str
+

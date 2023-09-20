@@ -1,7 +1,7 @@
 from uuid import uuid4
 from fastapi import HTTPException, UploadFile
 from app.infrastructure.database.orm_models.image import Image
-from app.infrastructure.database.repositories.image_repo import ImageRepository
+from app.infrastructure.database.repositories.image import ImageRepository
 from app.infrastructure.storage.s3_repository import S3Repository
 
 
@@ -9,6 +9,15 @@ class S3UseCase:
     def __init__(self, s3_repository: S3Repository, image_repository: ImageRepository):
         self.s3_repository = s3_repository
         self.image_repository = image_repository
+    
+    async def get_single_image(self, image_id: str):
+        image = await self.image_repository.get_image_by_id(image_id)
+        if not image:
+            raise HTTPException(status_code=404, detail="Image not found")
+        return image
+    
+    async def execute_get_user_images(self, user_id: str):
+        return await self.image_repository.get_images_by_user_id(user_id)
 
     async def execute_upload(self, user_id: str, file):
         # Upload to S3
