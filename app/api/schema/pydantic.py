@@ -1,35 +1,41 @@
 import logging
-import re
 from typing import Optional
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, EmailStr, constr
 from fastapi import HTTPException
 from typing import TypeVar, Optional
+from app.api.schema.validators import RegisterValidators
+from app.exceptions.custom_exceptions import InvalidPasswordException
 
 from app.infrastructure.database.orm_models.person import Gender
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 # get root logger
 logger = logging.getLogger(__name__)
+
 
 class UserType(BaseModel):
     id: str
     username: str
     email: str
 
+
 class CreateUserInput(BaseModel):
     username: str
     password: str
     email: str
 
+
 class LoginUserInput(BaseModel):
     username: str
     password: str
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str
+
 
 class TokenData(BaseModel):
     id: Optional[str] = None
@@ -37,22 +43,11 @@ class TokenData(BaseModel):
     user_id: Optional[str] = None
 
 
-class RegisterSchema(BaseModel):
-
-    username: str
-    email: str
+class RegisterSchema(RegisterValidators):
+    # les autres champs sont dans le validator (username etc)
+    email: EmailStr  # Permet de vérifier si un email est valide
     name: str
-    password: str
-    birthdate: str
-    gender: Gender
     profile_picture: str = "base64"
-
-    # Sex validation
-    @validator("gender")
-    def gender_validation(cls, v):
-        if hasattr(Gender, v) is False:
-            raise HTTPException(status_code=400, detail="Invalid input gender")
-        return v
 
 
 class LoginSchema(BaseModel):

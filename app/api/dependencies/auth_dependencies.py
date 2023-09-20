@@ -29,14 +29,14 @@ def get_token_repository():
     return JWTRepo()
 
 
-def get_login_service(
+def get_login_uc(
     user_repo: UsersRepository = Depends(get_user_repository),
     token_service: JWTRepo = Depends(get_token_repository),
 ) -> LoginUser:
     return LoginUser(user_repo, token_service)
 
 
-def get_register_service(
+def get_register_uc(
     person_repo: PersonRepository = Depends(get_person_repository),
     user_repo: UsersRepository = Depends(get_user_repository),
     role_repo: RoleRepository = Depends(get_role_repository),

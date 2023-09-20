@@ -51,7 +51,7 @@ def init_app():
         await db.drop_all()
         await db.close()
         
-
+    
     return app
 
 
