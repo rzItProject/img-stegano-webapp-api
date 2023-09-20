@@ -2,7 +2,7 @@ from fastapi import Depends
 from jose import JWTError, jwt
 from app.api.auth_repo import JWTRepo
 
-from app.api.dependencies.token import get_current_token
+from app.api.dependencies.token import get_token_from_cookie
 from app.exceptions.custom_exceptions import (
     InvalidTokenException,
     TokenMissingException,
@@ -12,7 +12,7 @@ from app.infrastructure.database.orm_models.users import Users
 from app.infrastructure.database.repositories.user import UsersRepository
 
 
-async def get_current_user(token: str = Depends(get_current_token)) -> Users:
+async def get_current_user(token: str = Depends(get_token_from_cookie)) -> Users:
     if not token:
         raise TokenMissingException()
     try:

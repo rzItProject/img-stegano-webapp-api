@@ -1,4 +1,6 @@
+from uuid import uuid4
 from fastapi import UploadFile
+from app.infrastructure.database.orm_models.image import Image
 from app.infrastructure.database.repositories.image_repo import ImageRepository
 from app.infrastructure.storage.s3_repository import S3Repository
 
@@ -8,17 +10,20 @@ class S3UseCase:
         self.s3_repository = s3_repository
         self.image_repository = image_repository
 
-    def execute_upload(self, user_id: str, file):
+    async def execute_upload(self, user_id: str, file):
         # Upload to S3
-        self.s3_repository.upload_file('stegano', file.file, file.filename)
+        self.s3_repository.upload_file("stegano", file.file, file.filename)
 
+        _image_id = str(uuid4())
         # Save to DB
-        image_data = {
-            "image_link": f"https://s3.tebi.io/stegano/{file.filename}",
-            "image_data": "some_data_here", 
-            "user_id": user_id
-        }
-        #await self.image_repository.save_image_details(image_data)
+        _image = Image(
+            id=_image_id,
+            image_link=f"https://s3.tebi.io/stegano/{file.filename}",
+            image_data=file.filename,
+            user_id=user_id,
+        )
+
+        await self.image_repository.create(**_image.dict())
 
     def execute_list_buckets(self):
         return self.s3_repository.list_buckets()

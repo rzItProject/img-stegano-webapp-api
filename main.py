@@ -50,7 +50,7 @@ def init_app():
     
     @app.on_event("shutdown")
     async def shutdown():
-        await db.drop_all()
+        #await db.drop_all()
         await db.close()
         
     
