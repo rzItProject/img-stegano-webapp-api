@@ -6,11 +6,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DB_CONFIG_TEST = os.getenv('DB_CONFIG_TEST')
+DB_CONFIG = os.getenv('DB_CONFIG_TEST')
 
 class DataBaseSession:
 
-    def __init__(self, url: str = DB_CONFIG_TEST):
+    def __init__(self, url: str):
         self.engine = create_async_engine(url, echo=True)
         self.SessionLocal = sessionmaker(
             bind=self.engine,
@@ -48,5 +48,5 @@ class DataBaseSession:
             raise
 
 
-db = DataBaseSession()
+db = DataBaseSession(url=DB_CONFIG)
  

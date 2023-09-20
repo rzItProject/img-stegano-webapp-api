@@ -75,3 +75,5 @@ class RegisterUser:
         await self.person_repository.create(**_person.dict())
         await self.user_role_repository.create(**_users_role.dict())
 
+        return _users
+

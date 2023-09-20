@@ -8,6 +8,7 @@ from app.core.utils.generate_role import generate_role
 from app.infrastructure.database.session import db
 # from app.api.routes.rest.authentication import router as auth_router
 from app.api.routes.rest.login_controller import router as auth_router
+from app.api.routes.rest.image_controller import router as image_router
 from app.api.routes.graphql.user_resolvers import Mutation, Query
 from app.api.dependencies.auth_middleware import AuthMiddleware
 
@@ -38,6 +39,7 @@ def init_app():
 
     # app.include_router(auth_router)
     app.include_router(auth_router)
+    app.include_router(image_router)
 
     app.include_router(graphql_app, prefix="/graphql")
 

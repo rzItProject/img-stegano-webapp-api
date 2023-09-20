@@ -1,5 +1,6 @@
 import os
-from fastapi import APIRouter, Depends
+from typing import Any
+from fastapi import APIRouter, Depends, File, UploadFile
 from fastapi.responses import JSONResponse
 from app.api.dependencies.auth_dependencies import get_login_uc, get_register_uc
 
@@ -30,7 +31,7 @@ async def login_endpoint(req: LoginSchema, login_service: LoginUser = Depends(ge
     token = await login_service.login(req)
     response = JSONResponse({"message": "Logged in successfully", "token": token})
     response.set_cookie(
-        key="access_token",
+        key="token",
         value=token,
         httponly=True,
         max_age=COOKIE_EXPIRE_SECONDE,
@@ -43,5 +44,6 @@ async def login_endpoint(req: LoginSchema, login_service: LoginUser = Depends(ge
     "/register", response_model=ResponseSchema, response_model_exclude_none=True
 )
 async def register_endpoint(req: RegisterSchema, register_service: RegisterUser = Depends(get_register_uc)):
-    await register_service.register(req)
+    user = await register_service.register(req)
+    print(user)
     return ResponseSchema(detail="Successfully save data!")
