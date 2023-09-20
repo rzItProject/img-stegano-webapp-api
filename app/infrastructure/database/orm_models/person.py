@@ -4,7 +4,7 @@ from typing import Optional
 from sqlalchemy import Column, Enum, ForeignKey, String
 from sqlmodel import SQLModel, Field, Relationship
 
-from app.infrastructure.database.model.mixins import TimeMixin
+from app.infrastructure.database.orm_models.mixins import TimeMixin
 
 
 class Gender(str, Enum):
@@ -17,11 +17,12 @@ class Person(SQLModel, TimeMixin, table=True):
     __tablename__ = "person"
 
     id: Optional[str] = Field(default=None, primary_key=True, nullable=False)
-    first_name: str
-    last_name: str
+    # first_name: str
+    # last_name: str
+    name: str
     birthdate: date
     gender: Gender
-    profile_picture: str
+    profile_picture: Optional[str]
 
     user_id: Optional[str] = Field(
         None, sa_column=Column(String, ForeignKey("users.id", ondelete="CASCADE"))

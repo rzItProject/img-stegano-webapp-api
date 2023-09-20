@@ -1,9 +1,9 @@
 
 from sqlalchemy.future import select
 from app.api.schema.pydantic import UserType
-from app.infrastructure.database.model.person import Person
-from app.infrastructure.database.model.users import Users
-from app.infrastructure.database.repository.user import UsersRepository
+from app.infrastructure.database.orm_models.person import Person
+from app.infrastructure.database.orm_models.users import Users
+from app.infrastructure.database.repositories.user import UsersRepository
 
 from app.infrastructure.database.session import db
 

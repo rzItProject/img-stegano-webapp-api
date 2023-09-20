@@ -3,7 +3,7 @@ import os
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
-from app.infrastructure.database.repository.auth_repo import JWTRepo
+from app.infrastructure.database.repositories.auth_repo import JWTRepo
 load_dotenv()
 
 from app.api.schema.pydantic import (
@@ -11,7 +11,7 @@ from app.api.schema.pydantic import (
     RegisterSchema,
     LoginSchema,
 )
-from app.service.authentication import AuthService
+from app.core.authentication import AuthService
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 

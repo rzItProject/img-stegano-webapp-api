@@ -6,8 +6,8 @@ from app.api.schema.strawberry import (
     UserUpdateInput,
     UserType,
 )
-from app.service.authentication import AuthService
-from app.service.user import UserService
+from app.core.authentication import AuthService
+from app.core.user import UserService
 
 
 

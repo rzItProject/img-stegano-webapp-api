@@ -3,11 +3,12 @@ import uvicorn
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from strawberry.fastapi import GraphQLRouter
+from app.core.utils.generate_role import generate_role
 
 from app.infrastructure.database.session import db
-from app.api.routes.rest.authentication import router as auth_router
+# from app.api.routes.rest.authentication import router as auth_router
+from app.api.routes.rest.login_controller import router as auth_router
 from app.api.routes.graphql.user_resolvers import Mutation, Query
-from app.service.authentication import generate_role
 from app.api.dependencies.auth_middleware import AuthMiddleware
 
 origins= [
@@ -35,13 +36,15 @@ def init_app():
     # Add the authentication middleware
     app.add_middleware(AuthMiddleware)
 
+    # app.include_router(auth_router)
     app.include_router(auth_router)
+
     app.include_router(graphql_app, prefix="/graphql")
 
     @app.on_event("startup")
     async def starup():
         await db.create_all()
-        #await generate_role()
+        await generate_role()
     
     @app.on_event("shutdown")
     async def shutdown():

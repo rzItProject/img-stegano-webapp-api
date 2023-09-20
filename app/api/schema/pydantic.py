@@ -5,7 +5,7 @@ from pydantic import BaseModel, validator
 from fastapi import HTTPException
 from typing import TypeVar, Optional
 
-from app.infrastructure.database.model.person import Gender
+from app.infrastructure.database.orm_models.person import Gender
 
 
 T = TypeVar('T')
@@ -43,15 +43,15 @@ class RegisterSchema(BaseModel):
     email: str
     name: str
     password: str
-    birth: str
+    birthdate: str
     gender: Gender
-    profile: str = "base64"
+    profile_picture: str = "base64"
 
     # Sex validation
     @validator("gender")
-    def sex_validation(cls, v):
+    def gender_validation(cls, v):
         if hasattr(Gender, v) is False:
-            raise HTTPException(status_code=400, detail="Invalid input sex")
+            raise HTTPException(status_code=400, detail="Invalid input gender")
         return v
 
 

@@ -1,7 +1,7 @@
 from typing import List
 from sqlalchemy.future import select
-from app.infrastructure.database.model.role import Role
-from app.infrastructure.database.repository.base_repo_crud import BaseCrud
+from app.infrastructure.database.orm_models.role import Role
+from app.infrastructure.database.repositories.base_repo_crud import BaseCrud
 
 from app.infrastructure.database.session import db
 

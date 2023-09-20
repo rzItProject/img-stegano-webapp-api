@@ -2,8 +2,8 @@ from typing import List, Optional
 from sqlalchemy import Column, String
 from sqlmodel import SQLModel, Field, Relationship
 
-from app.infrastructure.database.model.mixins import TimeMixin
-from app.infrastructure.database.model.user_role import UsersRole
+from app.infrastructure.database.orm_models.mixins import TimeMixin
+from app.infrastructure.database.orm_models.user_role import UsersRole
 
 
 class Users(SQLModel, TimeMixin, table=True):

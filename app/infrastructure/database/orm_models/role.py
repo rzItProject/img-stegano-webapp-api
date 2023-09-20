@@ -1,8 +1,8 @@
 from typing import List, Optional
 from sqlmodel import Relationship, SQLModel, Field
 
-from app.infrastructure.database.model.mixins import TimeMixin
-from app.infrastructure.database.model.user_role import UsersRole
+from app.infrastructure.database.orm_models.mixins import TimeMixin
+from app.infrastructure.database.orm_models.user_role import UsersRole
 
 
 class Role(SQLModel,TimeMixin, table=True):

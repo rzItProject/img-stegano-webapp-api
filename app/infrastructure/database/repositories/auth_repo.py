@@ -10,7 +10,7 @@ from fastapi.security import (
     HTTPAuthorizationCredentials,
     OAuth2PasswordBearer,
 )
-from app.infrastructure.database.repository.user import UsersRepository
+from app.infrastructure.database.repositories.user import UsersRepository
 
 
 from app.api.schema.pydantic import TokenData

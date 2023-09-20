@@ -8,16 +8,16 @@ from passlib.context import CryptContext
 from app.api.schema.pydantic import LoginSchema, RegisterSchema
 from app.api.schema.strawberry import ForgotPasswordSchema
 
-from app.infrastructure.database.model.person import Person
-from app.infrastructure.database.model.role import Role
-from app.infrastructure.database.model.user_role import UsersRole
-from app.infrastructure.database.model.users import Users
+from app.infrastructure.database.orm_models.person import Person
+from app.infrastructure.database.orm_models.role import Role
+from app.infrastructure.database.orm_models.user_role import UsersRole
+from app.infrastructure.database.orm_models.users import Users
 
-from app.infrastructure.database.repository.auth_repo import JWTRepo
-from app.infrastructure.database.repository.person import PersonRepository
-from app.infrastructure.database.repository.role import RoleRepository
-from app.infrastructure.database.repository.user import UsersRepository
-from app.infrastructure.database.repository.user_role import UsersRoleRepository
+from app.infrastructure.database.repositories.auth_repo import JWTRepo
+from app.infrastructure.database.repositories.person import PersonRepository
+from app.infrastructure.database.repositories.role import RoleRepository
+from app.infrastructure.database.repositories.user import UsersRepository
+from app.infrastructure.database.repositories.user_role import UsersRoleRepository
 
 
 # Encrypt password

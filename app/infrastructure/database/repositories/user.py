@@ -1,7 +1,7 @@
 from sqlalchemy import update as sql_update
 from sqlalchemy.future import select
-from app.infrastructure.database.model.users import Users
-from app.infrastructure.database.repository.base_repo_crud import BaseCrud
+from app.infrastructure.database.orm_models.users import Users
+from app.infrastructure.database.repositories.base_repo_crud import BaseCrud
 
 
 from app.infrastructure.database.session import db
