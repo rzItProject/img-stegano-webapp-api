@@ -1,5 +1,6 @@
 from uuid import uuid4
 from fastapi import HTTPException, UploadFile
+from psycopg2 import DatabaseError
 from app.infrastructure.database.orm_models.image import Image
 from app.infrastructure.database.repositories.image import ImageRepository
 from app.infrastructure.storage.s3_repository import S3Repository
@@ -16,8 +17,21 @@ class S3UseCase:
             raise HTTPException(status_code=404, detail="Image not found")
         return image
     
+    async def execute_get_all_images(self):
+        try:
+            images = await self.image_repository.get_all()
+            if not images:
+                raise HTTPException(status_code=404, detail="No images found in the database.")
+            return images
+        except DatabaseError as e:
+            # Vous pouvez logger l'erreur `e` ici si nécessaire
+            raise HTTPException("Error accessing the database.")
+    
     async def execute_get_user_images(self, user_id: str):
-        return await self.image_repository.get_images_by_user_id(user_id)
+        images = await self.image_repository.get_images_by_user_id(user_id)
+        if not images:
+                raise HTTPException(status_code=404, detail="No images found in the database.")
+        return images
 
     async def execute_upload(self, user_id: str, file):
         # Upload to S3
