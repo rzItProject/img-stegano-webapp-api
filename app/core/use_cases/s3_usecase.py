@@ -1,5 +1,5 @@
 from uuid import uuid4
-from fastapi import UploadFile
+from fastapi import HTTPException, UploadFile
 from app.infrastructure.database.orm_models.image import Image
 from app.infrastructure.database.repositories.image_repo import ImageRepository
 from app.infrastructure.storage.s3_repository import S3Repository
@@ -22,6 +22,11 @@ class S3UseCase:
             image_data=file.filename,
             user_id=user_id,
         )
+
+        # Vérifier si le nom de l'image existe déjà
+        existing_image = await self.image_repository.find_by_image_name(_image.image_data)
+        if existing_image:
+            raise HTTPException(status_code=400, detail="Image name already exists!")
 
         await self.image_repository.create(**_image.dict())
 
