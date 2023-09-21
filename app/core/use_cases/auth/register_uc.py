@@ -18,7 +18,7 @@ from app.infrastructure.database.repositories.user_role import UsersRoleReposito
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-class RegisterUser:
+class RegisterUseCase:
     def __init__(self, person_repository: PersonRepository, user_repository: UsersRepository, role_repository: RoleRepository, user_role_repository: UsersRoleRepository):
         self.person_repository = person_repository
         self.user_repository = user_repository

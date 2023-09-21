@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-class LoginUser:
+class LoginUseCase:
     def __init__(self, user_repo: UsersRepository, token_repo: JWTRepo):
         self.user_repo = user_repo
         self.token_repo = token_repo

@@ -1,6 +1,6 @@
 from fastapi import Depends
-from app.core.use_cases.auth.login_uc import LoginUser
-from app.core.use_cases.auth.register_uc import RegisterUser
+from app.core.use_cases.auth.login_uc import LoginUseCase
+from app.core.use_cases.auth.register_uc import RegisterUseCase
 from app.api.auth_repo import JWTRepo
 
 from app.infrastructure.database.repositories.person import PersonRepository
@@ -32,8 +32,8 @@ def get_token_repository():
 def get_login_uc(
     user_repo: UsersRepository = Depends(get_user_repository),
     token_service: JWTRepo = Depends(get_token_repository),
-) -> LoginUser:
-    return LoginUser(user_repo, token_service)
+) -> LoginUseCase:
+    return LoginUseCase(user_repo, token_service)
 
 
 def get_register_uc(
@@ -41,5 +41,5 @@ def get_register_uc(
     user_repo: UsersRepository = Depends(get_user_repository),
     role_repo: RoleRepository = Depends(get_role_repository),
     user_role_repo: UsersRoleRepository = Depends(get_user_role_repository),
-) -> RegisterUser:
-    return RegisterUser(person_repo, user_repo, role_repo, user_role_repo)
+) -> RegisterUseCase:
+    return RegisterUseCase(person_repo, user_repo, role_repo, user_role_repo)
