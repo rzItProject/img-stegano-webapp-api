@@ -1,6 +1,6 @@
 import os
 from typing import Any
-from fastapi import APIRouter, Depends, File, Request, UploadFile
+from fastapi import APIRouter, Depends, File, Request, Response, UploadFile
 from fastapi.responses import JSONResponse
 from app.api.dependencies.repo_dependencies import get_login_uc, get_register_uc
 from app.api.dependencies.user import get_current_user
@@ -61,3 +61,9 @@ async def user_register(
     user = await register_service.register(req)
     print(user)
     return ResponseSchema(detail="Successfully save data!")
+
+
+@router.post("/logout")
+async def logout(response: Response):
+    response.delete_cookie(key="token")
+    return {"message": "Logged out successfully"}
