@@ -71,3 +71,6 @@ class ImageResponseModel(BaseModel):
     image_link: str
     image_data: str
 
+class ImageUrlResponseModel(BaseModel):
+    url: str
+
